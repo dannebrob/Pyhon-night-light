@@ -3,7 +3,6 @@ import network
 import ntptime
 import neopixel
 import time
-import math
 
 PIN = 21         # GPIO21
 NUM = 24         # antal LEDs
@@ -14,7 +13,10 @@ np = neopixel.NeoPixel(Pin(PIN, Pin.OUT), NUM)
 np[0] = (255, 0, 0)
 np.write()
 
-#wifi conncect
+#wifi setup
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
+
 def ensure_wifi():
     if not wlan.isconnected():
         print("Wi-Fi disconnected. Reconnecting...")
@@ -65,7 +67,3 @@ while True:
             np.write()
 
     time.sleep(60)  # Wait 1 minute before checking again
-
-
-
-
