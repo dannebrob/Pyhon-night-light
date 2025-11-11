@@ -51,7 +51,8 @@ while True:
         hour = current_time[3]
         print(hour)
 
-        if hour >= 19:
+        
+        if hour >= 19 or hour < 6:
             for i in range(NUM):
                 np[i] = (255, 0, 0)  # Red
             np.write()
