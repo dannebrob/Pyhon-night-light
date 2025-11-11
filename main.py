@@ -20,7 +20,7 @@ wlan.active(True)
 def ensure_wifi():
     if not wlan.isconnected():
         print("Wi-Fi disconnected. Reconnecting...")
-        wlan.connect('Stangorsgatan', 'Kakor&Bullar')
+        wlan.connect('ssid', 'secret')
         timeout = 10
         while not wlan.isconnected() and timeout > 0:
             time.sleep(1)
