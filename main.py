@@ -14,9 +14,11 @@ np[0] = (255, 0, 0)
 np.write()
 
 #wifi setup
+
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
 
+# Connect to Wi-Fi and wait for connection
 def ensure_wifi():
     if not wlan.isconnected():
         print("Wi-Fi disconnected. Reconnecting...")
@@ -31,7 +33,7 @@ def ensure_wifi():
         else:
             print("Failed to reconnect.")
 
-
+# Get current time from NTP and adjust for timezone
 def get_time():
     try:
         ntptime.settime()
@@ -44,27 +46,44 @@ def get_time():
     print("Current time:", adjusted_time)
     return adjusted_time
 
+# Main loop, checking time and updating LEDs accordingly
 while True:
     ensure_wifi()
     current_time = get_time()
     if current_time:
         hour = current_time[3]
-        print(hour)
+        minute = current_time[4]
+        weekday = current_time[6]
+        # print(hour)
 
-        
-        if hour >= 19 or hour < 6:
+       # Evening red light between 19:00 and 06:15
+        if hour >= 19 or (hour == 6 and minute < 15) or hour < 6:
             for i in range(NUM):
                 np[i] = (255, 0, 0)  # Red
             np.write()
 
-        elif 6 <= hour <= 9:
-            for i in range(NUM):
-                np[i] = (0, 255, 0)  # Green
-            np.write()
+        # Morning green light between 06:15 and 09:00
+        elif (hour == 6 and minute >= 15) or (7 <= hour <= 9):
+            if weekday in (5, 6):  # Saturday or Sunday
+                if hour >= 7:
+                    for i in range(NUM):
+                        np[i] = (0, 255, 0)  # Green
+                    np.write()
+                else:
+                    for i in range(NUM):
+                        np[i] = (0, 0, 0)  # Off
+                    np.write()
+            else:  # Monday to Friday
+                for i in range(NUM):
+                    np[i] = (0, 255, 0)  # Green
+                np.write()
 
+        # Daytime off
         else:
             for i in range(NUM):
                 np[i] = (0, 0, 0)  # Off
             np.write()
+
+
 
     time.sleep(60)  # Wait 1 minute before checking again
