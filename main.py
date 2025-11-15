@@ -59,7 +59,7 @@ while True:
        # Evening red light between 19:00 and 06:15
         if hour >= 19 or (hour == 6 and minute < 15) or hour < 6:
             for i in range(NUM):
-                np[i] = (255, 0, 0)  # Red
+                np[i] = (125, 10, 0)  # Dim red/orange
             np.write()
 
         # Morning green light between 06:15 and 09:00
@@ -67,7 +67,7 @@ while True:
             if weekday in (5, 6):  # Saturday or Sunday
                 if hour >= 7:
                     for i in range(NUM):
-                        np[i] = (0, 255, 0)  # Green
+                         np[i] = (0, 30, 0)  # Dim green
                     np.write()
                 else:
                     for i in range(NUM):
@@ -75,7 +75,7 @@ while True:
                     np.write()
             else:  # Monday to Friday
                 for i in range(NUM):
-                    np[i] = (0, 255, 0)  # Green
+                    np[i] = (0, 30, 0)  # Dim green
                 np.write()
 
         # Daytime off
